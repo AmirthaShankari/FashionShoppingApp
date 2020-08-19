@@ -1,19 +1,47 @@
 // React Imports
-import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
 
 // App Imports
-import {AppMessages} from '../../constants/AppMessages';
-import {CommonStyles} from '../../themes';
-import {log} from '../../utils/logger';
+import { AppMessages } from '../../constants/AppMessages';
+import { AppConstants } from '../../constants/AppConstants';
+import { CommonStyles } from '../../themes';
+import { log } from '../../utils/logger';
+
+// Components Import
+import CategorySelection from '../../components/CategorySelection';
+import OffersSection from '../../components/OffersSection';
+import ProductsList from '../../components/ProductsList';
 
 const HomeScreen = () => {
-  const MESSAGES = AppMessages.SCREENS.HOME;
-  log.info('Logger check!!');
+  log.info('Rendering Home Screen!!');
+  // Declaring States
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  // Constants
+  const DATA = AppConstants.COMPONENTS.CATEGORY_SELECTION;
+
+  // Setting default category selection
+  if (!selectedCategory) {
+    const defaultCategory = DATA.find((category) => category.DEFAULT);
+    setSelectedCategory(defaultCategory.KEY);
+  }
+
+  const updateCategorySelection = (selection) => setSelectedCategory(selection);
+
   return (
     <View style={styles.mainContainer}>
-      <Text>{MESSAGES.TITLE}</Text>
-      <Text style={{fontFamily: 'Roboto-Bold'}}>Roboto</Text>
+      <SafeAreaView>
+        <CategorySelection
+          categories={DATA}
+          selectedCategory={selectedCategory}
+          updateSelection={updateCategorySelection}
+        />
+        <ScrollView>
+          <OffersSection />
+          <ProductsList selectedCategory={selectedCategory} />
+        </ScrollView>
+      </SafeAreaView>
     </View>
   );
 };

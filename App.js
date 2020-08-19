@@ -9,3 +9,4 @@ import React from 'react';
 import { AppContainer } from './src/routes';
 
 export default () => <AppContainer />;
+
