@@ -19,7 +19,7 @@ const HomeScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   // Constants
-  const DATA = AppConstants.COMPONENTS.CATEGORY_SELECTION;
+  const DATA = AppConstants.SCREENS.HOME.CATEGORIES;
 
   // Setting default category selection
   if (!selectedCategory) {

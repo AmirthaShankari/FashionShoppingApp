@@ -1,59 +1,94 @@
 // React Imports
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, ActivityIndicator, Text, FlatList, Image } from 'react-native';
+import React, { useEffect, useReducer } from 'react';
+import { StyleSheet, View, ActivityIndicator, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 // App Imports
-import { Metrics, Colors, CommonStyles } from '../../themes';
+import { Metrics, CommonStyles } from '../../themes';
 import { log } from '../../utils/logger';
+import { AppConstants } from '../../constants/AppConstants';
+import { AppMessages } from '../../constants/AppMessages';
+import ProductsService from '../../services/ProductsService';
+
+const productsService = new ProductsService();
+const C = AppConstants.COMPONENTS.PRODUCTS_LIST;
+const MESSAGES = AppMessages.COMPONENTS.PRODUCTS_LIST;
 
 const ProductsList = React.memo(({ selectedCategory }) => {
     log.info('Products List Initialized!');
+    const navigation = useNavigation();
+    // Defining reducer hook
+    const initialState = {
+        loading: true,
+        productsList: [],
+        error: ''
+    };
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case C.REDUCER_ACTION_TYPES.LOADING:
+                return { loading: true, productsList: [], error: '' }
+            case C.REDUCER_ACTION_TYPES.DATA:
+                return { loading: false, productsList: action.payload, error: '' };
+            case C.REDUCER_ACTION_TYPES.ERROR:
+                return { loading: false, productsList: [], error: action.payload };
+            default:
+                return { ...state }
+        }
+    }
+    const [state, dispatch] = useReducer(reducer, initialState)
 
-    // State Declaration
-    const [productsList, setProductsList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
-
+    // Defining Side Effects
     useEffect(() => {
         log.info('selected category in products List...', selectedCategory)
-        setLoading(true);
-        setTimeout(() => {
-            if (selectedCategory === 'MAN') {
-                setProductsList([{ "id": 1, "product_image": "https://i.ibb.co/9HgCvMk/model-2.png", "product_name": "Black Mamba Sleeve Shirt 1", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 2, "product_image": "https://i.ibb.co/XphhTtj/model.png", "product_name": "Black Mamba Sleeve Shirt 2", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 3, "product_image": "https://i.ibb.co/9HgCvMk/model-2.png", "product_name": "Black Mamba Sleeve Shirt 3", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 4, "product_image": "https://i.ibb.co/XphhTtj/model.png", "product_name": "Black Mamba Sleeve Shirt 4", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }])
-            } else if (selectedCategory === 'WOMAN') {
-                setProductsList([{ "id": 5, "product_image": "https://i.ibb.co/m47n3fk/model-3.png", "product_name": "Black Mamba Sleeve Shirt 1", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 6, "product_image": "https://i.ibb.co/f1V2XT6/female-model-2.jpg.png", "product_name": "Black Mamba Sleeve Shirt 2", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 7, "product_image": "https://i.ibb.co/f1V2XT6/female-model-2.jpg.png", "product_name": "Black Mamba Sleeve Shirt 3", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 8, "product_image": "https://i.ibb.co/m47n3fk/model-3.png", "product_name": "Black Mamba Sleeve Shirt 4", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }])
-            } else if (selectedCategory === 'KIDS') {
-                setProductsList([{ "id": 9, "product_image": "https://i.pinimg.com/originals/d7/d8/0a/d7d80ab4f1dff4cf20432c8992fc097d.jpg", "product_name": "Black Mamba Sleeve Shirt 1", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 10, "product_image": "https://ae01.alicdn.com/kf/HTB1ppUzLYPpK1RjSZFFq6y5PpXaq/LUOBOBEIBEI-Boys-Suits-Formal-Children-Costume-For-Boy-Wedding-Suit-Kids-Blazer-5-Pieces-Summer-Child.jpg", "product_name": "Black Mamba Sleeve Shirt 2", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 11, "product_image": "https://i.pinimg.com/originals/d7/d8/0a/d7d80ab4f1dff4cf20432c8992fc097d.jpg", "product_name": "Black Mamba Sleeve Shirt 3", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }, { "id": 12, "product_image": "https://ae01.alicdn.com/kf/HTB1ppUzLYPpK1RjSZFFq6y5PpXaq/LUOBOBEIBEI-Boys-Suits-Formal-Children-Costume-For-Boy-Wedding-Suit-Kids-Blazer-5-Pieces-Summer-Child.jpg", "product_name": "Black Mamba Sleeve Shirt 4", "price_details": { "currency_code": "RM", "current_price": 120, "actual_price": 130, "discount": "15%" }, "rating_details": { "scale": 5, "rating": 4.9 }, "available_sizes": ["XS", "S", "M", "L", "XL"] }])
+        const getProductsList = async () => {
+            try {
+                const products = await productsService.fetchProductsList(selectedCategory);
+                dispatch({
+                    type: C.REDUCER_ACTION_TYPES.DATA,
+                    payload: products
+                })
+            } catch (err) {
+                dispatch({
+                    type: C.REDUCER_ACTION_TYPES.ERROR,
+                    payload: MESSAGES.ERROR
+                })
             }
-            setLoading(false);
-        }, 3000)
+        }
+        getProductsList();
     }, [selectedCategory])
 
     const renderItem = ({ item }) => {
-        return <View style={styles.productCard}>
-            <Image
-                style={styles.productImg}
-                source={{
-                    uri: item.product_image,
-                }}
-            />
-            <Text style={styles.productName}>
-                {item.product_name}
-            </Text>
-        </View >
+        return <TouchableOpacity onPress={() => { navigation.navigate(AppConstants.ROUTES.PRODUCT_DETAIL, { product: item }) }}>
+            <View style={styles.productCard}>
+                {/* BEGIN :: PRODUCT IMAGE */}
+                <Image
+                    style={styles.productImg}
+                    source={{
+                        uri: item.product_image,
+                    }}
+                />
+                {/* END :: PRODUCT IMAGE */}
+
+                {/* BEGIN :: PRODUCT NAME */}
+                <Text style={styles.productName}>
+                    {item.product_name}
+                </Text>
+                {/* END :: PRODUCT NAME */}
+            </View >
+        </TouchableOpacity>
     };
 
     return (
         <View style={styles.productsWrapper}>
-            {(loading) ?
+            {(state.loading) ?
                 <ActivityIndicator style={styles.inlineLoader} /> :
-                (error) ?
-                    <Text>Something went wrong!</Text> : <View>
-                        <Text style={[styles.h5, styles.heading]}>Most Popular Products</Text>
+                (state.error) ?
+                    <Text>{state.error}</Text> : <View>
+                        <Text style={[styles.h5, styles.heading]}>{MESSAGES.TITLE}</Text>
                         <FlatList
                             horizontal
                             showsHorizontalScrollIndicator={false}
-                            data={productsList}
+                            data={state.productsList}
                             renderItem={renderItem}
                             keyExtractor={item => item.id.toString()}
                         />

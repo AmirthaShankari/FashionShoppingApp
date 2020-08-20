@@ -1,11 +1,14 @@
 // React Imports
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+
+// App Imports
+import { AppConstants } from '../constants/AppConstants';
 
 // App Screens Imports
 import HomeScreen from '../screens/HomeScreen';
-import {AppConstants} from '../constants/AppConstants';
+import ProductDetailScreen from '../screens/ProductDetailScreen';
 
 export default () => {
   // Defining stack navigator
@@ -17,6 +20,7 @@ export default () => {
           headerShown: false,
         }}>
         <Stack.Screen name={AppConstants.ROUTES.HOME} component={HomeScreen} />
+        <Stack.Screen name={AppConstants.ROUTES.PRODUCT_DETAIL} component={ProductDetailScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,24 +1,59 @@
 // React Imports
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { StyleSheet, View, ActivityIndicator, Text, FlatList, Image } from 'react-native';
 
 // App Imports
 import { Metrics, Colors, CommonStyles } from '../../themes';
 import { log } from '../../utils/logger';
+import OffersService from '../../services/OffersService';
+import { AppConstants } from '../../constants/AppConstants';
+import { AppMessages } from '../../constants/AppMessages';
+
+const offersService = new OffersService();
+const C = AppConstants.COMPONENTS.OFFERS_SECTION;
+const MESSAGES = AppMessages.COMPONENTS.OFFERS_SECTION;
 
 const OffersSection = React.memo(() => {
     log.info('Offer Section Initialized!');
 
-    // State Declaration
-    const [offersList, setOffersList] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    // Defining reducer hook
+    const initialState = {
+        loading: true,
+        offersList: [],
+        error: ''
+    };
+    const reducer = (state, action) => {
+        switch (action.type) {
+            case C.REDUCER_ACTION_TYPES.LOADING:
+                return { loading: true, offersList: [], error: '' }
+            case C.REDUCER_ACTION_TYPES.DATA:
+                return { loading: false, offersList: action.payload, error: '' };
+            case C.REDUCER_ACTION_TYPES.ERROR:
+                return { loading: false, offersList: [], error: action.payload };
+            default:
+                return { ...state }
+        }
+    }
+    const [state, dispatch] = useReducer(reducer, initialState)
 
+
+    // Defining component side effect
     useEffect(() => {
-        setTimeout(() => {
-            setOffersList([{ "id": 1, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://i.ibb.co/XphhTtj/model.png" }, { "id": 2, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://i.ibb.co/m47n3fk/model-3.png" }, { "id": 3, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://i.pinimg.com/originals/d7/d8/0a/d7d80ab4f1dff4cf20432c8992fc097d.jpg" }, { "id": 4, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://i.ibb.co/9HgCvMk/model-2.png" }, { "id": 5, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://i.ibb.co/f1V2XT6/female-model-2.jpg.png" }, { "id": 6, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://ae01.alicdn.com/kf/HTB1ppUzLYPpK1RjSZFFq6y5PpXaq/LUOBOBEIBEI-Boys-Suits-Formal-Children-Costume-For-Boy-Wedding-Suit-Kids-Blazer-5-Pieces-Summer-Child.jpg" }, { "id": 7, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://i.ibb.co/9HgCvMk/model-2.png" }, { "id": 8, "discountText": "Get 25% for Our Latest Arrial", "discountCode": "NEW25", "discountSlogan": "Beeing update with the latest product from us", "modelImg": "https://i.ibb.co/9HgCvMk/model-2.png" }])
-            setLoading(false);
-        }, 3000)
+        const getOffers = async () => {
+            try {
+                const offers = await offersService.getOffersList();
+                dispatch({
+                    type: C.REDUCER_ACTION_TYPES.DATA,
+                    payload: offers
+                });
+            } catch (err) {
+                dispatch({
+                    type: C.REDUCER_ACTION_TYPES.ERROR,
+                    payload: MESSAGES.ERROR
+                });
+            }
+        }
+        getOffers();
     }, [])
 
     const renderItem = ({ item }) => {
@@ -54,19 +89,19 @@ const OffersSection = React.memo(() => {
 
     return (
         <View style={styles.offerSection}>
-            {(loading) ?
+            {(state.loading) ?
                 <ActivityIndicator style={styles.inlineLoader} /> :
-                (error) ?
-                    <Text>Something went wrong!</Text> :
-                    (offersList.length > 0) ?
+                (state.error) ?
+                    <Text>{state.error}</Text> :
+                    (state.offersList.length > 0) ?
                         <FlatList
                             horizontal
                             showsHorizontalScrollIndicator={false}
-                            data={offersList}
+                            data={state.offersList}
                             renderItem={renderItem}
                             keyExtractor={item => item.id.toString()}
                         /> :
-                        <Text>No Valid offers</Text>}
+                        <Text>{MESSAGES.NO_VALID_OFFERS}</Text>}
         </View>
     );
 });
