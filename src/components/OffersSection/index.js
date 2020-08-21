@@ -63,6 +63,7 @@ const OffersSection = React.memo(() => {
                 source={{
                     uri: item.modelImg,
                 }}
+                resizeMode='cover'
             />
             <View style={styles.offerDetails}>
                 <View style={styles.discountText}>

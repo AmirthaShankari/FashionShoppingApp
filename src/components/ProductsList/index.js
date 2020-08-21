@@ -66,6 +66,7 @@ const ProductsList = React.memo(({ selectedCategory }) => {
                     source={{
                         uri: item.product_image,
                     }}
+                    resizeMode='cover'
                 />
                 {/* END :: PRODUCT IMAGE */}
 
@@ -101,7 +102,8 @@ const styles = StyleSheet.create({
     ...CommonStyles.loader,
     ...CommonStyles.heading,
     productsWrapper: {
-        paddingVertical: Metrics.padding_3
+        paddingVertical: Metrics.padding_3,
+        paddingBottom: Metrics.padding_3 * 3
     },
     productCard: {
         width: 150,

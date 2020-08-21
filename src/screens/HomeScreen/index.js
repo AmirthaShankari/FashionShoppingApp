@@ -12,6 +12,7 @@ import { log } from '../../utils/logger';
 import CategorySelection from '../../components/CategorySelection';
 import OffersSection from '../../components/OffersSection';
 import ProductsList from '../../components/ProductsList';
+import Header from '../../components/common/Header';
 
 const HomeScreen = () => {
   log.info('Rendering Home Screen!!');
@@ -32,6 +33,7 @@ const HomeScreen = () => {
   return (
     <View style={styles.mainContainer}>
       <SafeAreaView>
+        <Header solidBg={true} />
         <CategorySelection
           categories={DATA}
           selectedCategory={selectedCategory}

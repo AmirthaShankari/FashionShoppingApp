@@ -65,6 +65,12 @@ const CommonStyles = {
       fontFamily: 'Roboto',
     },
   },
+  commons: {
+    horizontalFlex: {
+      display: 'flex',
+      flexDirection: 'row'
+    }
+  }
 };
 
 export default CommonStyles;
