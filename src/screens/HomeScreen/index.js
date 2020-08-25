@@ -1,5 +1,5 @@
 // React Imports
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
 
 // App Imports
@@ -13,11 +13,22 @@ import CategorySelection from '../../components/CategorySelection';
 import OffersSection from '../../components/OffersSection';
 import ProductsList from '../../components/ProductsList';
 import Header from '../../components/common/Header';
+import { Context as CartContext } from '../../context/CartContext';
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   log.info('Rendering Home Screen!!');
   // Declaring States
   const [selectedCategory, setSelectedCategory] = useState('');
+  const { getCart } = useContext(CartContext);
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      log.info('focussed ninibbu');
+      getCart();
+    });
+    return () => {
+      unsubscribe();
+    }
+  }, [navigation]);
 
   // Constants
   const DATA = AppConstants.SCREENS.HOME.CATEGORIES;

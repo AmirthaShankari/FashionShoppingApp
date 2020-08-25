@@ -1,5 +1,6 @@
 export const AppConstants = {
   ROUTES: {
+    APP_LOAD: 'AppLoad',
     HOME: 'Home',
     PRODUCT_DETAIL: 'ProductDetail'
   },
@@ -45,5 +46,18 @@ export const AppConstants = {
         ERROR: 'ERROR'
       }
     }
+  },
+  CONTEXTS: {
+    CART_CONTEXT: {
+      ADD_TO_CART: 'ADD_TO_CART',
+      GET_CART: 'GET_CART',
+      GET_STORED_CART: 'GET_STORED_CART'
+    },
+    APP_LOAD: {
+      UPDATE: 'UPDATE'
+    }
+  },
+  ASYNC_STORAGE: {
+    CART: 'cart'
   }
 };

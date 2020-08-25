@@ -10,6 +10,7 @@ import { AppConstants } from '../../constants/AppConstants';
 import { AppMessages } from '../../constants/AppMessages';
 import ProductsService from '../../services/ProductsService';
 
+// Constants and service variables declaration
 const productsService = new ProductsService();
 const C = AppConstants.COMPONENTS.PRODUCTS_LIST;
 const MESSAGES = AppMessages.COMPONENTS.PRODUCTS_LIST;
@@ -17,6 +18,7 @@ const MESSAGES = AppMessages.COMPONENTS.PRODUCTS_LIST;
 const ProductsList = React.memo(({ selectedCategory }) => {
     log.info('Products List Initialized!');
     const navigation = useNavigation();
+
     // Defining reducer hook
     const initialState = {
         loading: true,
@@ -42,6 +44,7 @@ const ProductsList = React.memo(({ selectedCategory }) => {
         log.info('selected category in products List...', selectedCategory)
         const getProductsList = async () => {
             try {
+                dispatch({ type: C.LOADING });
                 const products = await productsService.fetchProductsList(selectedCategory);
                 dispatch({
                     type: C.REDUCER_ACTION_TYPES.DATA,

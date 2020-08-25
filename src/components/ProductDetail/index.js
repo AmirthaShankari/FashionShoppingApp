@@ -1,24 +1,22 @@
 // React Imports
-import React, { useEffect, useReducer } from 'react';
-import { StyleSheet, View, ActivityIndicator, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 // App Imports
-import { Metrics, Colors, CommonStyles, Images } from '../../themes';
+import { Metrics, Colors, CommonStyles } from '../../themes';
 import { log } from '../../utils/logger';
-import OffersService from '../../services/OffersService';
-import { AppConstants } from '../../constants/AppConstants';
 import { AppMessages } from '../../constants/AppMessages';
 import Star from '../../assets/icons/star.svg';
 
-const offersService = new OffersService();
-const C = AppConstants.COMPONENTS.OFFERS_SECTION;
-const MESSAGES = AppMessages.COMPONENTS.OFFERS_SECTION;
+// Constants Declaration
+const MESSAGES = AppMessages.COMPONENTS.PRODUCT_DETAIL;
 
-const ProductDetail = ({ productDetail }) => {
+const ProductDetail = React.memo(({ productDetail }) => {
     log.info('ProductDetail Initialized!');
 
     return (
-        <View style={styles.ProductWrapper}>
+        <View >
+            {/* BEGIN :: PRODUCT IMAGE SECTION  */}
             <Image
                 style={styles.productImg}
                 source={{
@@ -26,6 +24,8 @@ const ProductDetail = ({ productDetail }) => {
                 }}
                 resizeMode='cover'
             />
+            {/* END :: PRODUCT IMAGE SECTION  */}
+
             {/* BEGIN :: PRODUCT DETAIL SECTION  */}
             <View style={styles.productDetail}>
                 <Text style={styles.h5}>{productDetail.product_name}</Text>
@@ -34,7 +34,7 @@ const ProductDetail = ({ productDetail }) => {
                         <Text style={styles.currentPrice}>{productDetail.price_details.currency_code} {productDetail.price_details.current_price}</Text>
                         <View style={styles.horizontalFlex}>
                             <Text style={[styles.actualPrice, styles.greyText]}>{productDetail.price_details.currency_code} {productDetail.price_details.actual_price}</Text>
-                            <Text style={styles.discount}>{productDetail.price_details.discount} OFF</Text>
+                            <Text style={styles.discount}>{productDetail.price_details.discount} {MESSAGES.OFF}</Text>
                         </View>
                     </View>
                     <View style={styles.ratingWrapper}>
@@ -46,42 +46,14 @@ const ProductDetail = ({ productDetail }) => {
                 </View>
             </View>
             {/* END :: PRODUCT DETAIL SECTION  */}
-
-            {/* BEGIN :: SIZE AVAILABILITY SECTION  */}
-            <View style={[styles.sizeAvailability, styles.horizontalFlex]}>
-                <View>
-                    <Text style={styles.greyText}>
-                        Size Available :
-                        </Text>
-                </View>
-                <View style={styles.sizeAvailable}>
-                    <FlatList
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
-                        data={productDetail.available_sizes}
-                        keyExtractor={(item) => item}
-                        renderItem={({ item }) => (
-                            <View style={styles.sizeWrapper}>
-                                <TouchableOpacity>
-                                    <Text style={[styles.h6, styles.size]}>{item}</Text>
-                                </TouchableOpacity>
-                            </View>
-                        )}
-                    />
-                </View>
-            </View>
-            {/* END :: SIZE AVAILABILITY SECTION  */}
         </View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     ...CommonStyles.loader,
     ...CommonStyles.heading,
     ...CommonStyles.commons,
-    ProductWrapper: {
-        marginBottom: Metrics.margin_3 * 4
-    },
     productImg: {
         width: Metrics.screenWidth,
         height: Metrics.screenHeight * (.7)

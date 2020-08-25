@@ -1,26 +1,38 @@
 // React Imports
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, SafeAreaView, Text, Image, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useContext } from 'react';
+import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 // App Imports
-import { AppMessages } from '../../constants/AppMessages';
-import { AppConstants } from '../../constants/AppConstants';
 import { CommonStyles, Metrics, Colors } from '../../themes';
 import { log } from '../../utils/logger';
-import ProductDetail from '../../components/ProductDetail';
-import RoundIconButton from '../../components/common/RoundIconButton';
 import Heart from '../../assets/icons/heart.svg';
 import Hanger from '../../assets/icons/hanger.svg';
-import Header from '../../components/common/Header';
+import { AppMessages } from '../../constants/AppMessages';
 
+// Context Imports
+import { Context as CartContext } from '../../context/CartContext';
+
+// Components Import
+import Header from '../../components/common/Header';
+import SizeAvailability from '../../components/SizeAvailability';
+import ProductDetail from '../../components/ProductDetail';
+import RoundIconButton from '../../components/common/RoundIconButton';
 
 const ProductDetailScreen = ({ route }) => {
     log.info('Rendering Product detail Screen!!');
+
+    const MESSAGES = AppMessages.SCREENS.PRODUCT_DETAIL;
+
+    // State Declaration and Side effects
     const [productDetail, setProductDetail] = useState(null);
+    const [selectedSize, setSelectedSize] = useState('');
+    const { addToCart } = useContext(CartContext);
 
     useEffect(() => {
         const { product } = route.params;
         setProductDetail(product);
+        // Setting default size
+        setSelectedSize(product.available_sizes[0]);
     }, [])
 
     return (
@@ -28,10 +40,11 @@ const ProductDetailScreen = ({ route }) => {
             {/* BEGIN :: PRODUCT DETAIL SECTION */}
             <ScrollView>
                 {(productDetail) ?
-                    <View>
+                    <View style={styles.productDetailWrapper}>
                         <ProductDetail productDetail={productDetail} />
+                        <SizeAvailability sizes={productDetail.available_sizes} selectedSize={selectedSize} updateSizeSelection={setSelectedSize} />
                     </View>
-                    : <Text>No detail</Text>}
+                    : <Text>{MESSAGES.NO_ITEM}</Text>}
             </ScrollView>
             {/* END:: PRODUCT DETAIL SECTION */}
 
@@ -51,9 +64,9 @@ const ProductDetailScreen = ({ route }) => {
                         <Hanger width={25} height={25} />
                     </RoundIconButton>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.addToCartBtn} onPress={() => { console.log('testing') }}>
+                <TouchableOpacity style={styles.addToCartBtn} onPress={() => { addToCart({ ...productDetail, size: selectedSize }) }}>
                     <Text style={[styles.h5, styles.addToCartText]}>
-                        Add To Cart
+                        {MESSAGES.BUTTON_TXT.ADD_TO_CART}
                     </Text>
                 </TouchableOpacity>
             </View>
@@ -72,6 +85,9 @@ const styles = StyleSheet.create({
     },
     productDetail: {
         position: 'relative'
+    },
+    productDetailWrapper: {
+        marginBottom: Metrics.margin_3 * 4
     },
     productImg: {
         width: Metrics.screenWidth,
