@@ -11,9 +11,13 @@ const RoundIconButton = ({ children, color, badgeValue }) => {
     return (
         <View style={[styles.roundButton, styles[color]]}>
             {children}
-            {(badgeValue && badgeValue > 0) ? <View style={styles.badge}>
-                <Text style={[styles.badgeCount, styles.h6]}>{badgeValue}</Text>
-            </View> : <View></View>}
+            {(badgeValue && badgeValue > 0) ? (
+                <View style={styles.badge}>
+                    <Text style={[styles.badgeCount, styles.h6]}>{badgeValue}</Text>
+                </View>
+            ) : (
+                    null
+                )}
         </View>
     );
 }

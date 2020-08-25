@@ -14,6 +14,7 @@ import { AppMessages } from '../../../constants/AppMessages';
 
 const Header = ({ solid, showBack }) => {
     log.info('Header initialized!')
+
     const navigation = useNavigation();
     const MESSAGE = AppMessages.COMPONENTS.HEADER;
 
