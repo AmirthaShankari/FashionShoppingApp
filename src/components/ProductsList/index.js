@@ -122,6 +122,7 @@ const styles = StyleSheet.create({
     },
     productName: {
         paddingVertical: Metrics.padding_1,
+        marginBottom: Metrics.margin_3,
         fontSize: 16,
         ...CommonStyles.fontWeights.w300
     }

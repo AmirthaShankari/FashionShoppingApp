@@ -12,7 +12,7 @@ import Back from '../../../assets/icons/back.svg';
 import { Context as CartContext } from '../../../context/CartContext';
 import { AppMessages } from '../../../constants/AppMessages';
 
-const Header = ({ solid, showBack }) => {
+const Header = React.memo(({ solid, showBack }) => {
     log.info('Header initialized!')
 
     const navigation = useNavigation();
@@ -23,7 +23,7 @@ const Header = ({ solid, showBack }) => {
 
     return (
         <View style={[styles.header, (solid) ? solidBg : null]}>
-            {(showBack) ? (
+            {showBack ? (
                 <TouchableOpacity onPress={() => { navigation.goBack() }}>
                     <View>
                         <RoundIconButton color='white'>
@@ -41,7 +41,7 @@ const Header = ({ solid, showBack }) => {
             </TouchableOpacity>
         </View>
     );
-}
+})
 
 
 const styles = StyleSheet.create({

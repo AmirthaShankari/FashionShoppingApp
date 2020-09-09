@@ -44,7 +44,7 @@ const ProductDetailScreen = ({ route }) => {
                         <ProductDetail productDetail={productDetail} />
                         <SizeAvailability sizes={productDetail.available_sizes} selectedSize={selectedSize} updateSizeSelection={setSelectedSize} />
                     </View>
-                    : <Text>{MESSAGES.NO_ITEM}</Text>}
+                    : null}
             </ScrollView>
             {/* END:: PRODUCT DETAIL SECTION */}
 
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     ...CommonStyles.heading,
     fixedHeader: {
         position: 'absolute',
-        top: 70,
+        top: Metrics.screenHeight * .025,
         left: 0,
     },
     productDetail: {

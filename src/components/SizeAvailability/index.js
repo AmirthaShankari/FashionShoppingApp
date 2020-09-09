@@ -7,11 +7,11 @@ import { Metrics, Colors, CommonStyles } from '../../themes';
 import { log } from '../../utils/logger';
 import { AppMessages } from '../../constants/AppMessages';
 
+const MESSAGE = AppMessages.COMPONENTS.SIZE_AVAILABILITY;
 
 const SizeAvailability = React.memo(({ sizes, selectedSize, updateSizeSelection }) => {
     log.info('Size availability Initialized!');
 
-    const MESSAGE = AppMessages.COMPONENTS.SIZE_AVAILABILITY;
 
     return (
         <View style={[styles.sizeAvailability, styles.horizontalFlex]}>

@@ -3,7 +3,6 @@ import React, { useState, useContext, useEffect } from 'react';
 import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
 
 // App Imports
-import { AppMessages } from '../../constants/AppMessages';
 import { AppConstants } from '../../constants/AppConstants';
 import { CommonStyles } from '../../themes';
 import { log } from '../../utils/logger';
@@ -22,7 +21,7 @@ const HomeScreen = ({ navigation }) => {
   const { getCart } = useContext(CartContext);
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      log.info('focussed ninibbu');
+      log.info('focussed');
       getCart();
     });
     return () => {

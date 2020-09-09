@@ -117,7 +117,8 @@ const styles = StyleSheet.create({
     },
     offerItem: {
         position: "relative",
-        width: Metrics.screenWidth * (.7),
+        width: (Metrics.screenWidth * (.7) < 400) ? Metrics.screenWidth * (.7) : 400,
+        maxWidth: 400,
         marginLeft: Metrics.margin_3,
         borderRadius: 10
     },
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         left: 0,
         bottom: 0,
-        width: Metrics.screenWidth * (.7),
+        width: (Metrics.screenWidth * (.7) < 400) ? Metrics.screenWidth * (.7) : 400,
         paddingHorizontal: Metrics.padding_2,
         backgroundColor: Colors.semiTransparent
     },

@@ -1,7 +1,7 @@
 // React Imports
 import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack';
 
 // App Imports
 import { AppConstants } from '../constants/AppConstants';
@@ -24,6 +24,7 @@ export default () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}>{isAppLoadComplete ? (
           // App Stack
           <>
