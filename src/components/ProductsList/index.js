@@ -1,10 +1,10 @@
 // React Imports
 import React, { useEffect, useReducer } from 'react';
-import { StyleSheet, View, ActivityIndicator, Text, FlatList, Image, TouchableOpacity } from 'react-native';
+import { View, ActivityIndicator, Text, FlatList, Image, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // App Imports
-import { Metrics, CommonStyles } from '../../themes';
+import { styles } from './styles';
 import { log } from '../../utils/logger';
 import { AppConstants } from '../../constants/AppConstants';
 import { AppMessages } from '../../constants/AppMessages';
@@ -101,31 +101,6 @@ const ProductsList = React.memo(({ selectedCategory }) => {
     );
 });
 
-const styles = StyleSheet.create({
-    ...CommonStyles.loader,
-    ...CommonStyles.heading,
-    productsWrapper: {
-        paddingVertical: Metrics.padding_3,
-        paddingBottom: Metrics.padding_3 * 3
-    },
-    productCard: {
-        width: 150,
-        marginVertical: Metrics.margin_3,
-        marginLeft: Metrics.margin_3
-    },
-    heading: {
-        marginHorizontal: Metrics.margin_3
-    },
-    productImg: {
-        height: 220,
-        borderRadius: 5
-    },
-    productName: {
-        paddingVertical: Metrics.padding_1,
-        marginBottom: Metrics.margin_3,
-        fontSize: 16,
-        ...CommonStyles.fontWeights.w300
-    }
-});
+
 
 export default ProductsList;

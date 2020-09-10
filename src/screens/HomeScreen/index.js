@@ -1,10 +1,10 @@
 // React Imports
 import React, { useState, useContext, useEffect } from 'react';
-import { StyleSheet, View, SafeAreaView, ScrollView } from 'react-native';
+import { View, SafeAreaView, ScrollView } from 'react-native';
 
 // App Imports
 import { AppConstants } from '../../constants/AppConstants';
-import { CommonStyles } from '../../themes';
+import { styles } from './styles';
 import { log } from '../../utils/logger';
 
 // Components Import
@@ -12,6 +12,7 @@ import CategorySelection from '../../components/CategorySelection';
 import OffersSection from '../../components/OffersSection';
 import ProductsList from '../../components/ProductsList';
 import Header from '../../components/common/Header';
+import AppStatusBar from '../../components/common/AppStatusBar';
 import { Context as CartContext } from '../../context/CartContext';
 
 const HomeScreen = ({ navigation }) => {
@@ -42,8 +43,9 @@ const HomeScreen = ({ navigation }) => {
 
   return (
     <View style={styles.mainContainer}>
+      <AppStatusBar />
       <SafeAreaView>
-        <Header solidBg={true} />
+        <Header transparentHeader={false} roundButton={false} />
         <CategorySelection
           categories={DATA}
           selectedCategory={selectedCategory}
@@ -58,8 +60,6 @@ const HomeScreen = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
-  ...CommonStyles.screen,
-});
+
 
 export default HomeScreen;

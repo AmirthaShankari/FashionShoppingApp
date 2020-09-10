@@ -1,9 +1,9 @@
 // React Imports
 import React, { useState, useEffect, useContext } from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity } from 'react-native';
 
 // App Imports
-import { CommonStyles, Metrics, Colors } from '../../themes';
+import { styles } from './styles';
 import { log } from '../../utils/logger';
 import Heart from '../../assets/icons/heart.svg';
 import Hanger from '../../assets/icons/hanger.svg';
@@ -16,7 +16,8 @@ import { Context as CartContext } from '../../context/CartContext';
 import Header from '../../components/common/Header';
 import SizeAvailability from '../../components/SizeAvailability';
 import ProductDetail from '../../components/ProductDetail';
-import RoundIconButton from '../../components/common/RoundIconButton';
+import IconButton from '../../components/common/IconButton';
+import AppStatusBar from '../../components/common/AppStatusBar';
 
 const ProductDetailScreen = ({ route }) => {
     log.info('Rendering Product detail Screen!!');
@@ -37,6 +38,7 @@ const ProductDetailScreen = ({ route }) => {
 
     return (
         <View style={[styles.productDetail, styles.mainContainer]}>
+            <AppStatusBar />
             {/* BEGIN :: PRODUCT DETAIL SECTION */}
             <ScrollView>
                 {(productDetail) ?
@@ -49,20 +51,20 @@ const ProductDetailScreen = ({ route }) => {
             {/* END:: PRODUCT DETAIL SECTION */}
 
             <View style={styles.fixedHeader}>
-                <Header showBack={true} />
+                <Header showBack={true} transparentHeader={true} roundButton={true} />
             </View>
 
             {/* BEGIN :: ADD TO CART SECTION */}
             <View style={styles.addToCartSection}>
                 <TouchableOpacity>
-                    <RoundIconButton color='grey'>
+                    <IconButton color='grey' roundButton={true}>
                         <Heart width={20} height={20} />
-                    </RoundIconButton>
+                    </IconButton>
                 </TouchableOpacity>
                 <TouchableOpacity style={{ marginLeft: 20 }}>
-                    <RoundIconButton color='grey'>
+                    <IconButton color='grey' roundButton={true}>
                         <Hanger width={25} height={25} />
-                    </RoundIconButton>
+                    </IconButton>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.addToCartBtn} onPress={() => { addToCart({ ...productDetail, size: selectedSize }) }}>
                     <Text style={[styles.h5, styles.addToCartText]}>
@@ -75,48 +77,6 @@ const ProductDetailScreen = ({ route }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    ...CommonStyles.screen,
-    ...CommonStyles.heading,
-    fixedHeader: {
-        position: 'absolute',
-        top: Metrics.screenHeight * .025,
-        left: 0,
-    },
-    productDetail: {
-        position: 'relative'
-    },
-    productDetailWrapper: {
-        marginBottom: Metrics.margin_3 * 4
-    },
-    productImg: {
-        width: Metrics.screenWidth,
-        height: Metrics.screenHeight * (.6)
-    },
-    addToCartSection: {
-        position: "absolute",
-        bottom: 0,
-        left: 0,
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        width: Metrics.screenWidth,
-        padding: Metrics.padding_2,
-        backgroundColor: Colors.white,
-        elevation: 10
-    },
-    addToCartBtn: {
-        flex: 1,
-        paddingVertical: Metrics.padding_2,
-        backgroundColor: Colors.black,
-        borderRadius: 5,
-        marginLeft: Metrics.margin_2
-    },
-    addToCartText: {
-        color: Colors.white,
-        textAlign: "center",
-    }
-});
+
 
 export default ProductDetailScreen;
