@@ -6,8 +6,8 @@ import { View, Text } from 'react-native';
 import { styles } from './styles';
 import { log } from '../../../utils/logger';
 
-const IconButton = ({ children, color, badgeValue, roundButton }) => {
-    log.info('Round button initialized!')
+const IconButton = React.memo(({ children, color, badgeValue, roundButton }) => {
+    log.info('Icon button initialized!')
     return (
         <View style={[(roundButton) ? styles.roundButton : null, styles[color]]}>
             <View style={styles.iconContainer}>
@@ -22,7 +22,7 @@ const IconButton = ({ children, color, badgeValue, roundButton }) => {
             </View>
         </View>
     );
-}
+})
 
 
 export default IconButton;

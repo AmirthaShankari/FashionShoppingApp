@@ -6,14 +6,13 @@ import { View, SafeAreaView, ScrollView } from 'react-native';
 import { AppConstants } from '../../constants/AppConstants';
 import { styles } from './styles';
 import { log } from '../../utils/logger';
+import { Context as CartContext } from '../../context/CartContext';
 
 // Components Import
-import CategorySelection from '../../components/CategorySelection';
-import OffersSection from '../../components/OffersSection';
-import ProductsList from '../../components/ProductsList';
-import Header from '../../components/common/Header';
-import AppStatusBar from '../../components/common/AppStatusBar';
-import { Context as CartContext } from '../../context/CartContext';
+import { CategorySelection, OffersSection, ProductsList, Header, AppStatusBar } from '../../components';
+
+// Constants
+const C = AppConstants.SCREENS.HOME.CATEGORIES;
 
 const HomeScreen = ({ navigation }) => {
   log.info('Rendering Home Screen!!');
@@ -30,14 +29,13 @@ const HomeScreen = ({ navigation }) => {
     }
   }, [navigation]);
 
-  // Constants
-  const DATA = AppConstants.SCREENS.HOME.CATEGORIES;
-
-  // Setting default category selection
-  if (!selectedCategory) {
-    const defaultCategory = DATA.find((category) => category.DEFAULT);
-    setSelectedCategory(defaultCategory.KEY);
-  }
+  useEffect(() => {
+    // Setting default category selection
+    if (!selectedCategory) {
+      const defaultCategory = C.find((category) => category.DEFAULT);
+      setSelectedCategory(defaultCategory.KEY);
+    }
+  }, [])
 
   const updateCategorySelection = (selection) => setSelectedCategory(selection);
 
@@ -47,7 +45,7 @@ const HomeScreen = ({ navigation }) => {
       <SafeAreaView>
         <Header transparentHeader={false} roundButton={false} />
         <CategorySelection
-          categories={DATA}
+          categories={C}
           selectedCategory={selectedCategory}
           updateSelection={updateCategorySelection}
         />

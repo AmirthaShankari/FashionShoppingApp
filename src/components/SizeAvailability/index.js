@@ -12,7 +12,6 @@ const MESSAGE = AppMessages.COMPONENTS.SIZE_AVAILABILITY;
 const SizeAvailability = React.memo(({ sizes, selectedSize, updateSizeSelection }) => {
     log.info('Size availability Initialized!');
 
-
     return (
         <View style={[styles.sizeAvailability, styles.horizontalFlex]}>
             <View>

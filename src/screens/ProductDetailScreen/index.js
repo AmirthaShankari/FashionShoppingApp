@@ -13,16 +13,12 @@ import { AppMessages } from '../../constants/AppMessages';
 import { Context as CartContext } from '../../context/CartContext';
 
 // Components Import
-import Header from '../../components/common/Header';
-import SizeAvailability from '../../components/SizeAvailability';
-import ProductDetail from '../../components/ProductDetail';
-import IconButton from '../../components/common/IconButton';
-import AppStatusBar from '../../components/common/AppStatusBar';
+import { Header, SizeAvailability, ProductDetail, IconButton, AppStatusBar } from '../../components'
+
+const MESSAGES = AppMessages.SCREENS.PRODUCT_DETAIL;
 
 const ProductDetailScreen = ({ route }) => {
     log.info('Rendering Product detail Screen!!');
-
-    const MESSAGES = AppMessages.SCREENS.PRODUCT_DETAIL;
 
     // State Declaration and Side effects
     const [productDetail, setProductDetail] = useState(null);
